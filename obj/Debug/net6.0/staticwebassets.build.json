@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "JPH7DrZQfi09pdTFYgHoyiyHoLbIsHZd3BYPpadb4bQ=",
+  "Source": "webapp-backend",
+  "BasePath": "_content/webapp-backend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
