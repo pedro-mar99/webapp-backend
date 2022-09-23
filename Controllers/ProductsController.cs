@@ -46,5 +46,21 @@ namespace webapp_backend.Controllers
         {
             return await _context.Products.FindAsync(id);
         }
+
+        [HttpPost("register")]
+        public async Task<ActionResult<Product>> CreateProduct(Product product)
+        {
+            try
+            {
+                _context.Products.Add(product);
+                await _context.SaveChangesAsync();
+                return product;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                "Error creating new product record");
+            }
+        }
     }
 }
