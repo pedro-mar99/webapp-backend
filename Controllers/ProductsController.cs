@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapp_backend.Data;
@@ -40,11 +36,29 @@ namespace webapp_backend.Controllers
         }
 
         [HttpGet("{id}")] // LE PEGA A: api/products/{id}
-
         // Ahora no usamos el IEnumerable, solo traemos el objeto Product
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
             return await _context.Products.FindAsync(id);
+        }
+
+        [HttpPut("{id}")] // LE PEGA A: api/products/{id}
+        // Ahora no usamos el IEnumerable, solo traemos el objeto Product
+        public async Task<ActionResult<Product>> UpdateProduct(int id, Product product)
+        {
+            try
+            {
+                product.Id = id;
+                _context.Products.Update(product);
+                await _context.SaveChangesAsync();
+                return product;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                "Error updating product record");
+            }
+
         }
 
         [HttpPost("register")]
@@ -62,5 +76,28 @@ namespace webapp_backend.Controllers
                 "Error creating new product record");
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Product>> DeleteProduct(int id)
+        {
+            try
+            {
+                var result = await _context.Products.FirstOrDefaultAsync(product => product.Id == id);
+                Console.WriteLine(result);
+                if (result != null)
+                {
+                    _context.Products.Remove(result);
+                    await _context.SaveChangesAsync();
+                    return result;
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                 "Error removing product record");
+            }
+        }
+
     }
 }
